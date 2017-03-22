@@ -23,13 +23,15 @@ public class Pyramid extends GraphicsProgram {
 	private static final int BRICK_HEIGHT = 12;
 
 /** Number of bricks in the base of the pyramid */
-	private static final int BRICKS_IN_BASE = 10;
+	private static final int BRICKS_IN_BASE = 14;
+	int screenHeight=400;
+	int screenWidth=450;
 	
 	public void run() {
 		/* You fill this in. */
 		for (int h=0; h<BRICKS_IN_BASE; h++) {
-			int y = getHeight()-(h+1)*BRICK_HEIGHT;
-			int x = (getWidth()-(BRICKS_IN_BASE-h)*BRICK_WIDTH)/2;
+			int y = screenHeight-(h+1)*BRICK_HEIGHT;
+			int x = (screenWidth-(BRICKS_IN_BASE-h)*BRICK_WIDTH)/2;
 			for (int n=0; n<BRICKS_IN_BASE-h;n++) {
 				GRect sq= new GRect(x+n*BRICK_WIDTH, y, BRICK_WIDTH, BRICK_HEIGHT);
 				add(sq);
