@@ -19,7 +19,7 @@ public class CollectNewspaperKarel extends SuperKarel {
 		ReturnToStartP();
 	}
 	
-	public void MoveToNewspaper() {
+	private void MoveToNewspaper() {
 		turnRight();
 		move();
 		turnLeft();
@@ -29,7 +29,7 @@ public class CollectNewspaperKarel extends SuperKarel {
 		}
 	}
 	
-	public void ReturnToStartP() {
+	private void ReturnToStartP() {
 		turnAround();
 		for (int i=0; i<3;i++) {
 			move();	
