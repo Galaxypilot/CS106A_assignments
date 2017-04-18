@@ -12,14 +12,76 @@ import acm.util.*;
 import java.awt.*;
 
 public class Hangman extends ConsoleProgram {
+	private int guessTimes = 8;
+	public void init() {
+		canvas = new HangmanCanvas();
+		add(canvas);
+	}
+	private HangmanCanvas canvas;
 
     public void run() {
 		/* You fill this in */
-    	/**1. Choose a random word*/
-    	
-    	/**2. Keep track of the user¡¯s partially guessed word*/
-    	
-    	
-	}
+    	canvas.reset();
+    	HangmanLexicon wordlist = new HangmanLexicon();
+        println("Welcome to Hangman!");
+        
+    	playGames: while(true) {
+    		/**1. Choose a random word*/
+        	String Word = wordlist.getWord(rgen.nextInt(0,wordlist.getWordCount()));
+        	/*Generate ______ */
+        	String guessWord = "";
+        	String guessChar = "";
+            for(int i = 0; i < Word.length(); i++) {
+            	guessWord += '¡ª';
+            }
+        	/**2. Keep track of the user¡¯s partially guessed word*/
 
+        	while(guessTimes>0 && guessWord.indexOf("¡ª")>=0) {
+        		println("The word now looks like this:"+" "+guessWord);
+        		println("You have "+guessTimes+" "+ "guessTimes left.");
+        		String guess = readLine("Your guess: ");
+        		if (guess.equals("")|| guess.length()>1) {
+        			println("Invalid input!");
+        			continue;
+        		}
+        		guess = guess.toUpperCase();
+        		guessChar += guess; 
+        		if (Word.indexOf(guess)<0) {
+        			println("There are no  "+guess+"'S "+"in the word.");
+        			guessTimes--;
+        			canvas.displayWord(guessWord);
+        			canvas.noteIncorrectGuess(guessChar,guessTimes);
+        		} else {
+        			println("That guess is correct.");
+        			/**Return the update guessWord*/
+        			guessWord = updateWord(guessWord,guess,Word);
+        		}
+        	}
+    		/** Check win or lose*/
+    		if (guessWord.indexOf("¡ª")<0) {
+    			println("You win.");
+    		} else {
+    			println("You lose.");
+    		} 
+    		
+    		/**Continue playing or not?*/
+    		String YN = readLine("Continuew playing? Y/N ");
+    		if (YN.equals("N")) {
+    			break playGames;
+    		}
+    	}    	
+	}
+    
+    /**Be careful about the comparism */
+    private String updateWord(String ToB, String oR, String notToB) {     			
+	    for (int i=0;i<notToB.length();i++) {
+			if (oR.charAt(0)==notToB.charAt(i)) {
+				ToB = ToB.substring(0, i)+oR+ToB.substring(i+1);
+			}
+		}
+	    return ToB;
+    }
+    
+    private RandomGenerator rgen = new RandomGenerator();
+    private String guessWrod;
 }

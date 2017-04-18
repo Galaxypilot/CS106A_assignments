@@ -4,13 +4,24 @@
  * This file keeps track of the Hangman display.
  */
 
+import java.awt.Color;
+
 import acm.graphics.*;
 
 public class HangmanCanvas extends GCanvas {
+	
+	/**Set the reference point.*/
+	private static double x = 50;
+	private static double y = 50;
 
 /** Resets the display so that only the scaffold appears */
 	public void reset() {
 		/* You fill this in */
+		removeAll();
+		/*Add the scaffold. */
+		add(new GLine(x,y,x,y+SCAFFOLD_HEIGHT));
+		add(new GLine(x,y,x+BEAM_LENGTH,y));
+		add(new GLine(x+BEAM_LENGTH,y,x+BEAM_LENGTH,y+ROPE_LENGTH));
 	}
 
 /**
@@ -18,8 +29,15 @@ public class HangmanCanvas extends GCanvas {
  * state of the game.  The argument string shows what letters have
  * been guessed so far; unguessed letters are indicated by hyphens.
  */
+	
 	public void displayWord(String word) {
 		/* You fill this in */
+			GObject displayword = getElementAt(x, y+SCAFFOLD_HEIGHT*1.3);
+			if (displayword!=null) {
+				remove(displayword);
+			}
+			add(new GLabel(word, x, y+SCAFFOLD_HEIGHT*1.3));
+
 	}
 
 /**
@@ -28,9 +46,38 @@ public class HangmanCanvas extends GCanvas {
  * on the scaffold and adds the letter to the list of incorrect
  * guesses that appears at the bottom of the window.
  */
-	public void noteIncorrectGuess(char letter) {
+	public void noteIncorrectGuess(String letter, int guessTimes) {
 		/* You fill this in */
-	}
+		if (guessTimes == 7) {
+			/*head*/
+			add(new GOval(x+BEAM_LENGTH-HEAD_RADIUS,y+ROPE_LENGTH,HEAD_RADIUS*2,HEAD_RADIUS*2));
+		} else if (guessTimes == 6) {
+			/*body*/
+			add(new GLine(x+BEAM_LENGTH,y+ROPE_LENGTH+HEAD_RADIUS*2,x+BEAM_LENGTH,y+ROPE_LENGTH+HEAD_RADIUS*2+BODY_LENGTH));
+		} else if (guessTimes == 5) {
+			/*left arm*/
+			add(new GLine(x+BEAM_LENGTH,y+ROPE_LENGTH+HEAD_RADIUS*2+ARM_OFFSET_FROM_HEAD,x+BEAM_LENGTH-UPPER_ARM_LENGTH,y+ROPE_LENGTH+HEAD_RADIUS*2+ARM_OFFSET_FROM_HEAD));
+			add(new GLine(x+BEAM_LENGTH-UPPER_ARM_LENGTH,y+ROPE_LENGTH+HEAD_RADIUS*2+ARM_OFFSET_FROM_HEAD,x+BEAM_LENGTH-UPPER_ARM_LENGTH,y+ROPE_LENGTH+HEAD_RADIUS*2+ARM_OFFSET_FROM_HEAD+LOWER_ARM_LENGTH));
+		} else if (guessTimes == 4) {
+			/*right arm*/
+			add(new GLine(x+BEAM_LENGTH,y+ROPE_LENGTH+HEAD_RADIUS*2+ARM_OFFSET_FROM_HEAD,x+BEAM_LENGTH+UPPER_ARM_LENGTH,y+ROPE_LENGTH+HEAD_RADIUS*2+ARM_OFFSET_FROM_HEAD));
+			add(new GLine(x+BEAM_LENGTH+UPPER_ARM_LENGTH,y+ROPE_LENGTH+HEAD_RADIUS*2+ARM_OFFSET_FROM_HEAD,x+BEAM_LENGTH+UPPER_ARM_LENGTH,y+ROPE_LENGTH+HEAD_RADIUS*2+ARM_OFFSET_FROM_HEAD+LOWER_ARM_LENGTH));
+		} else if (guessTimes == 3) {
+			/*left leg*/
+			add(new GLine(x+BEAM_LENGTH,y+ROPE_LENGTH+HEAD_RADIUS*2+BODY_LENGTH,x+BEAM_LENGTH-HIP_WIDTH,y+ROPE_LENGTH+HEAD_RADIUS*2+BODY_LENGTH+LEG_LENGTH));
+		} else if (guessTimes == 2) {
+			/*right leg*/
+			add(new GLine(x+BEAM_LENGTH,y+ROPE_LENGTH+HEAD_RADIUS*2+BODY_LENGTH,x+BEAM_LENGTH+HIP_WIDTH,y+ROPE_LENGTH+HEAD_RADIUS*2+BODY_LENGTH+LEG_LENGTH));
+		} else if (guessTimes == 1) {
+			/*left foot*/
+			add(new GLine(x+BEAM_LENGTH-HIP_WIDTH,y+ROPE_LENGTH+HEAD_RADIUS*2+BODY_LENGTH+LEG_LENGTH,x+BEAM_LENGTH-HIP_WIDTH-FOOT_LENGTH,y+ROPE_LENGTH+HEAD_RADIUS*2+BODY_LENGTH+LEG_LENGTH));
+		} else if (guessTimes == 0) {
+			/*right foot*/
+			add(new GLine(x+BEAM_LENGTH+HIP_WIDTH,y+ROPE_LENGTH+HEAD_RADIUS*2+BODY_LENGTH+LEG_LENGTH,x+BEAM_LENGTH+HIP_WIDTH+FOOT_LENGTH,y+ROPE_LENGTH+HEAD_RADIUS*2+BODY_LENGTH+LEG_LENGTH));
+		}
+		add(new GLabel(letter, x, y+SCAFFOLD_HEIGHT*1.4));
+		
+	} 
 
 /* Constants for the simple version of the picture (in pixels) */
 	private static final int SCAFFOLD_HEIGHT = 360;
