@@ -13,6 +13,8 @@ import java.awt.*;
 
 public class Hangman extends ConsoleProgram {
 	private int guessTimes = 8;
+	//private HangmanLexicon lexicon = new HangmanLexicon();
+	
 	public void init() {
 		canvas = new HangmanCanvas();
 		add(canvas);
@@ -22,12 +24,14 @@ public class Hangman extends ConsoleProgram {
     public void run() {
 		/* You fill this in */
     	canvas.reset();
-    	HangmanLexicon wordlist = new HangmanLexicon();
+    	HangmanLexicon lexicon = new HangmanLexicon();
         println("Welcome to Hangman!");
-        
+        //int r1 = lexicon.getWordCount(); // return how many words the list have
+        //int r2 = rgen.nextInt(1, r1); // random number
+        //String Word = lexicon.getWord(r2); //returnWords store a random word
     	playGames: while(true) {
-    		/**1. Choose a random word*/
-        	String Word = wordlist.getWord(rgen.nextInt(0,wordlist.getWordCount()));
+    		/**1. Choose a random word*/    		
+        	String Word = lexicon.getWord(rgen.nextInt(0,lexicon.getWordCount()));
         	/*Generate ______ */
         	String guessWord = "";
         	String guessChar = "";
@@ -84,4 +88,5 @@ public class Hangman extends ConsoleProgram {
     
     private RandomGenerator rgen = new RandomGenerator();
     private String guessWrod;
+
 }
